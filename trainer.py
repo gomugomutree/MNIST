@@ -70,3 +70,23 @@ class Trainer():
         return total_loss / len(x)
 
 
+    def train(self, train_data, valid_data, config):
+        lowest_loss = np.inf
+        best_model = None
+
+        for epoch_index in range(config.n_epochs):
+            train_loss = self._train(train_data[0], train_data[1], config)
+            valid_loss = self._validation(valid_data[0], valid_data[1], config)
+
+            if valid_loss < lowest_loss:
+                lowest_loss = valid_loss
+                best_model = deepcopy(self.model.state_dict())
+
+            print('Epoch(%d/%d) : train_loss=%.4e  vaild_loss=%.4e   lowest_loss=%.4e' % (
+                epoch_index + 1, 
+                config.n_epochs, 
+                train_loss, 
+                valid_loss, 
+                lowest_loss))
+        
+        self.model.load_state_dict(best_model)
