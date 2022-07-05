@@ -27,7 +27,7 @@ class Trainer():
 
     # mini-batch-size model train
     def _train(self, x, y, config):
-        self.model.trian()
+        self.model.train()
 
         x, y = self._batchify(x, y, config.batch_size)
         total_loss = 0

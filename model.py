@@ -1,4 +1,3 @@
-from regex import F
 import torch
 import torch.nn as nn
 
@@ -26,12 +25,12 @@ class Block(nn.Module):
             get_regularizer(use_batch_norm, output_size),
         )
 
-        def forword(self, x):
-            # |x| = (batch_size, input_size)
-            y = self.block(x)
-            # |y| = (batch_size, output_size)
+    def forward(self, x):
+        # |x| = (batch_size, input_size)
+        y = self.block(x)
+        # |y| = (batch_size, output_size)
 
-            return y
+        return y
 
         
 class ImageClassifier(nn.Module):
@@ -52,14 +51,19 @@ class ImageClassifier(nn.Module):
         for hidden_size in hidden_sizes:
             blocks += [Block(
                     last_hidden_size,
-                    output_size,
+                    hidden_size,
                     use_batch_norm,
                     dropout_p
             )]
-            last_hidden_size = output_size
+            last_hidden_size = hidden_size
         
         self.layers = nn.Sequential(
             *blocks,
             nn.Linear(last_hidden_size, output_size),
             nn.LogSoftmax(dim=1),
         )
+
+    def forward(self, x):
+        y = self.layers(x)
+
+        return y

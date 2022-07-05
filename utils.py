@@ -1,4 +1,3 @@
-from numpy import indices
 import torch
 
 def load_mnist(is_train=True, flatten=True):
@@ -50,6 +49,3 @@ def get_hidden_size(input_size, output_size, n_layers):
         current_size = hidden_sizes[-1]
 
     return hidden_sizes
-
-
-
